@@ -30,6 +30,7 @@ def lambda_handler(event, context):
 
         instance_details = []
         region = event["region"]
+        account_id = event["account"]  # Added AWS account ID
         items = event["detail"]["responseElements"]["instancesSet"]["items"]
 
         for item in items:
@@ -40,10 +41,12 @@ def lambda_handler(event, context):
         user = event["detail"]["userIdentity"].get("userName", "Unknown")
         time = event["time"]
 
+        # Including AWS Account ID in the message
         message = (
             f"New EC2 Instance(s) Launched\n\n"
             f"{chr(10).join(instance_details)}\n\n"
             f"Launched By: {user}\n"
+            f"AWS Account: {account_id}\n"  # Added AWS Account
             f"Region: {region}\n"
             f"Time: {time} UTC"
         )
@@ -63,13 +66,5 @@ def lambda_handler(event, context):
         print(f"Error: {str(e)}")
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
-        }
-
-
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
+            "body": json.dumps({"error": str(e)}),
         }
