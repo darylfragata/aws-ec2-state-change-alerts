@@ -4,6 +4,22 @@ This project monitors EC2 instance state changes (such as launch, stop, terminat
 
 ---
 
+## Architecture Diagram
+
+Below are the architecture diagrams for the EC2 state change alert system:
+
+### Single Account Architecture
+
+![Single Account Architecture](images/Architecture1.png)
+
+*Note: This sample implementation focuses on the single-account architecture.*
+
+### Multi-Account Architecture
+
+![Multi-Account Architecture](images/Architecture2.png)
+
+---
+
 ## Features
 
 - Monitors EC2 state changes (launch, stop, terminate, reboot).
@@ -93,21 +109,8 @@ Time: 2025-05-13T19:40:38Z
 
 ## Enhancements (Future Improvements)
 
-- **Multi-Account Support**: Extend the architecture to handle EC2 state changes from multiple AWS accounts.
 - **Detailed Notifications**: Include additional metadata, such as instance tags or cost estimation.
 - **Infrastructure as Code**: Provide CloudFormation or Terraform templates for automated setup.
 - **Error Handling**: Improve the Lambda function with retries and detailed logging for failed notifications.
 
 ---
-
-## Architecture Diagram
-### Single Account
-![Single Account](images/Architecture1.png)
-### Multi-Account
-![Multi-Account](images/Architecture2.png)
-
----
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
