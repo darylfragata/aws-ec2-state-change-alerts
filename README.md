@@ -101,8 +101,10 @@ Time: 2025-05-13T19:40:38Z
 ---
 
 ## Architecture Diagram
-
-*(Include an architecture diagram here to visualize the workflow.)*
+### Single Account
+![Single Account](images/Architecture1.png)
+### Multi-Account
+![Multi-Account](images/Architecture2.png)
 
 ---
 
