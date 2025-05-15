@@ -77,7 +77,17 @@ def extract_message(event, region, account_id, instance_ids, subject):
             f"Platform: {details['platform']}"
         )
 
-    user = event["detail"]["userIdentity"].get("userName", "Unknown")
+    user_identity = event["detail"]["userIdentity"]
+    user_type = user_identity.get("type", "")
+    user = "Unknown"
+
+    if user_type == "IAMUser":
+        user = user_identity.get("userName", "Unknown")
+    elif user_type == "AssumedRole":
+        principal_id = user_identity.get("principalId", "")
+        if ":" in principal_id:
+            user = principal_id.split(":")[1]  # e.g., MRoxas@smithfield.com
+
     time = event["time"]
     message = (
         f"{subject}\n\n"
@@ -87,6 +97,7 @@ def extract_message(event, region, account_id, instance_ids, subject):
         f"Region: {region}\n"
         f"Time: {time} UTC\n\n\n\n\n\n\n\n\n\n"
     )
+
     return subject, message
 
 
