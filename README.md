@@ -1,6 +1,6 @@
 # AWS EC2 State Change Alerts
 
-This project monitors EC2 instance state changes (such as launch, stop, terminate, and reboot) and triggers alerts via **SNS** using **AWS Lambda** and **CloudTrail**.
+This project monitors EC2 instance state changes (such as launch, reboot, stop, start, and terminate) and triggers alerts via **SNS** using **AWS Lambda** and **CloudTrail**.
 
 ---
 
@@ -22,7 +22,7 @@ Below are the architecture diagrams for the EC2 state change alert system:
 
 ## Features
 
-- Monitors EC2 state changes (launch, stop, terminate, reboot).
+- Monitors EC2 state changes (launch, reboot, stop, start, terminate).
 - Sends notifications through **SNS** with details about the state change.
 - Configured using **EventBridge** to trigger on EC2 state changes captured by **CloudTrail**.
 
