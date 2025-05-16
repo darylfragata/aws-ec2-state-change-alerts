@@ -82,11 +82,11 @@ def extract_message(event, region, account_id, instance_ids, subject):
     user = "Unknown"
 
     if user_type == "IAMUser":
-        user = user_identity.get("userName", "Unknown")
+        user = user_identity.get("userName", "Unknown") # e.g., clouduser
     elif user_type == "AssumedRole":
         principal_id = user_identity.get("principalId", "")
         if ":" in principal_id:
-            user = principal_id.split(":")[1]  # e.g., MRoxas@smithfield.com
+            user = principal_id.split(":")[1]  # e.g., clouduser@example.com
 
     time = event["time"]
     message = (
