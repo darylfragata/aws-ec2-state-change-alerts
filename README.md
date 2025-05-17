@@ -1,6 +1,6 @@
 # AWS EC2 State Change Alerts
 
-This project monitors EC2 instance state changes (such as launch, reboot, stop, start, and terminate) and triggers alerts via **SNS** using **AWS Lambda** and **CloudTrail**.
+This project monitors EC2 instance state changes (such as launch, start, stop, reboot, and terminate) and triggers alerts via **SNS** using **AWS Lambda** and **CloudTrail**.
 
 ---
 
@@ -22,7 +22,7 @@ Below are the architecture diagrams for the EC2 state change alert system:
 
 ## Features
 
-- Monitors EC2 state changes (launch, reboot, stop, start, terminate).  
+- Monitors EC2 state changes (launch, start, stop, reboot, terminate).  
 - Sends notifications through **SNS** with details about the state change.  
 - Configured using **EventBridge** to trigger on EC2 state changes captured by **CloudTrail**.
 
@@ -31,7 +31,7 @@ Below are the architecture diagrams for the EC2 state change alert system:
 ## Prerequisites
 
 - AWS account  
-- IAM roles with appropriate permissions for Lambda, CloudTrail, EventBridge, and SNS  
+- IAM roles with appropriate permissions for Lambda.
 - Basic knowledge of AWS services such as IAM, EC2, Lambda, CloudTrail, SNS, and EventBridge  
 - AWS CLI or Console for setup  
 
@@ -48,41 +48,31 @@ Below are the architecture diagrams for the EC2 state change alert system:
 
 ## Setup Instructions
 
-### 1. **Configure CloudTrail**
+### 1. **Create IAM Role for Lambda**
 
-Ensure CloudTrail is logging EC2 instance actions (launch, stop, terminate, reboot):
-
-1. Go to the **CloudTrail** service in the AWS console.  
-2. Create or update a trail to include **EC2** service events.  
-3. Enable logging for **Management Events** and ensure **Read/Write events** are logged.  
-4. Verify the CloudTrail event history includes EC2 instance state change events.
-
----
-
-### 2. **Create an EventBridge Rule**
-
-Set up an EventBridge rule to capture EC2 state change events from CloudTrail:
-
-1. Go to **EventBridge** in the AWS console.  
-2. Create a new rule to capture EC2 state changes:  
-   - Select the **CloudTrail** event source.  
-   - Filter the event patterns for EC2 state changes (launch, stop, terminate, reboot).  
-   - Set the rule to trigger the Lambda function that processes the state change event.
+1. Go to the **IAM** console and click **Roles**.  
+2. Click **Create Role** and select **AWS service**, then choose **Lambda**.  
+3. Attach the following permissions policies:  
+   - **AWSLambdaBasicExecutionRole**  
+   - **AmazonSNSFullAccess**  
+   - **AmazonEC2ReadOnlyAccess**  
+4. Name the role (e.g., `Lambda-EC2StateChangeAlerts-Role`) and click **Create Role**.  
+5. Assign this role to your Lambda function under **Configuration > Permissions**.
 
 ---
 
-### 3. **Lambda Function**
+### 2. **Lambda Function**
 
 Create the Lambda function to process EC2 state changes and send notifications via SNS:
 
 1. Go to **AWS Lambda** and create a new Lambda function.  
 2. Upload the Lambda code from this repository to handle EC2 state changes.  
-3. Add appropriate permissions for Lambda to read CloudTrail events, describe EC2 instances, and publish to SNS.  
+3. Add appropriate permissions for Lambda to create lambda execution logs, describe EC2 instances, and publish to SNS.  
 4. Set up the Lambda trigger to be the **EventBridge rule** you created.
 
 ---
 
-### 4. **Create an SNS Topic**
+### 3. **Create an SNS Topic**
 
 Create an SNS topic to send alerts to a distribution list or endpoint:
 
@@ -92,13 +82,39 @@ Create an SNS topic to send alerts to a distribution list or endpoint:
 
 ---
 
+### 4. **Create an EventBridge Rule**
+
+Set up an EventBridge rule to capture EC2 state change events from CloudTrail:
+
+1. Go to **EventBridge** in the AWS console.  
+2. Create a new rule to capture EC2 state changes:  
+   - Select the **CloudTrail** event source.  
+   - Filter the event patterns for EC2 state changes (RunInstances, StopInstances, StartInstances, RebootInstances, TerminateInstaces).  
+   - Set the rule to trigger the Lambda function that processes the state change event.
+
+---
+
+### 5. **Configure CloudTrail**
+
+Ensure CloudTrail is logging EC2 instance actions (RunInstances, StopInstances, StartInstances, RebootInstances, TerminateInstaces):
+
+1. Go to the **CloudTrail** service in the AWS console.  
+2. Create a trail to record aws service events.  
+3. Enable logging for **Management Events** and ensure **Read/Write events** are logged.  
+4. Verify the CloudTrail event history includes EC2 instance state change events.
+
+---
+
 ## Usage
 
-Once the setup is complete, the EventBridge rule will automatically trigger the Lambda function when an EC2 instance's state changes (e.g., launched, stopped, terminated, rebooted). The Lambda function will send a notification via SNS, including the following details:
+Once the setup is complete, the EventBridge rule will automatically trigger the Lambda function when an EC2 instance's state changes (e.g., launched, started, stopped, rebooted, terminated). The Lambda function will send a notification via SNS, including the following details:
 
 - Instance ID  
 - Name tag (if available)  
+- Instance type
+- Platform (e.g., Linux, Windows)
 - User who triggered the action  
+- AWS account
 - Region  
 - Timestamp of the event
 
@@ -106,14 +122,18 @@ Once the setup is complete, the EventBridge rule will automatically trigger the 
 
 ```
 
-New EC2 Instance(s) Launched
+EC2 Instance(s) Launched
 
-Instance: i-0be3f21f92465c4e7
-Name: Test\_Server
+Instance: i-0711a134e51977e5b
+Name: tes2
+Type: t3.micro
+Platform: Linux/UNIX
 
-Launched By: cloud\_user
+
+Initiated By: cloud_user
+AWS Account: 339713094763
 Region: us-east-1
-Time: 2025-05-13T19:40:38Z
+Time: 2025-05-17T18:51:01Z UTC
 
 ```
 
