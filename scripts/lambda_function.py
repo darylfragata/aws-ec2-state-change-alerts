@@ -19,7 +19,7 @@ def get_instance_details(instance_id, region):
         tags = instance.get('Tags', [])
         name_tag = next((tag['Value'] for tag in tags if tag['Key'] == 'Name'), 'No Name Tag')
         instance_type = instance.get('InstanceType', 'Unknown')
-        platform = instance.get('Platform', 'Linux/UNIX')  # Default is Linux if key doesn't exist
+        platform = instance.get('Platform', 'Unknown')  # Default is Unknown if key doesn't exist
         return {
             "instance_id": instance_id,
             "name": name_tag,
