@@ -125,7 +125,7 @@ Once the setup is complete, the EventBridge rule will automatically trigger the 
 EC2 Instance(s) Launched
 
 Instance: i-0711a134e51977e5b
-Name: tes2
+Name: Test Server
 Type: t3.micro
 Platform: Linux/UNIX
 

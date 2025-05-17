@@ -15,7 +15,14 @@ def get_instance_details(instance_id, region):
         ec2_client = boto3.client('ec2', region_name=region)
         response = ec2_client.describe_instances(InstanceIds=[instance_id])
         instance = response['Reservations'][0]['Instances'][0]
+<<<<<<< HEAD
         
+=======
+        tags = instance.get('Tags', [])
+        name_tag = next((tag['Value'] for tag in tags if tag['Key'] == 'Name'), 'No Name Tag')
+        instance_type = instance.get('InstanceType', 'Unknown')
+        platform = instance.get('Platform', 'Unknown')  # Default is Unknown if key doesn't exist
+>>>>>>> 5a3c482367fd9e7102c5dcb5c31f591c2515a9ae
         return {
             "instance_id": instance.get("InstanceId"),
             "instance_type": instance.get("InstanceType"),
