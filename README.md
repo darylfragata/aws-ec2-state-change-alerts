@@ -96,7 +96,7 @@ Set up an EventBridge rule to capture EC2 state change events from CloudTrail:
 
 ### 5. **Configure CloudTrail**
 
-Ensure CloudTrail is logging EC2 instance actions (RunInstances, StopInstances, StartInstances, RebootInstances, TerminateInstaces):
+Ensure CloudTrail is logging EC2 instance actions (RunInstances, StopInstances, StartInstances, RebootInstances, TerminateInstances):
 
 1. Go to the **CloudTrail** service in the AWS console.  
 2. Create a trail to record aws service events.  
@@ -147,6 +147,19 @@ Time: 2025-05-17T18:51:01Z UTC
 - **SNS**: Charged per published message and delivery type (email is generally free, SMS and mobile push incur costs).  
 
 Costs are generally low for moderate usage but should be reviewed based on your account activity volume. Use the [AWS Pricing Calculator](https://calculator.aws/#/) for detailed estimates.
+
+---
+
+### AWS Service Costs Breakdown (Example Monthly Estimate)
+
+| **Service**     | **Pricing Details**                                                               | **Example Monthly Usage**                          | **Estimated Monthly Cost** |
+| --------------- | --------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------------- |
+| **CloudTrail**  | Management events free; S3 storage costs \$0.023/GB                               | 500 events → \~3 MB logs (\~0.003 GB) stored in S3 | \~\$0.00007                |
+| **EventBridge** | \$1.00 per 1 million events published/matched                                     | 500 matched events                                 | \~\$0.0005                 |
+| **Lambda**      | \$0.20 per 1 million requests (after free tier); compute \$0.0000166667/GB-s      | 500 invocations, 512 MB, 100 ms each               | \$0 (within free tier)     |
+| **SNS**         | $0.50 per 1 million publishes after free tier; email delivery free | 500 email notifications                            | \$0                        |
+
+**Estimated Total Monthly Cost: \~ \$0.0006**
 
 ---
 
