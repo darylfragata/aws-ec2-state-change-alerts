@@ -2,6 +2,8 @@
 
 This project monitors EC2 instance state changes (such as launch, start, stop, reboot, and terminate) and triggers alerts via **SNS** using **AWS Lambda** and **CloudTrail**.
 
+🎥 **See the project in action! [Watch the Video](https://youtu.be/OLra9h0qMvM?si=NVclJMpW0-B-yt1l)**
+
 ---
 
 ## Architecture Diagram
