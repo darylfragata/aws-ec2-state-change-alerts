@@ -89,7 +89,7 @@ Set up an EventBridge rule to capture EC2 state change events from CloudTrail:
 1. Go to **EventBridge** in the AWS console.  
 2. Create a new rule to capture EC2 state changes:  
    - Select the **CloudTrail** event source.  
-   - Filter the event patterns for EC2 state changes (RunInstances, StopInstances, StartInstances, RebootInstances, TerminateInstaces).  
+   - Filter the event patterns for EC2 state changes (RunInstances, StopInstances, StartInstances, RebootInstances, TerminateInstances).  
    - Set the rule to trigger the Lambda function that processes the state change event.
 
 ---
